@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login — ALSAQQAF Logistics</title>
+<link rel="icon" href="/favicon.png">
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;background:#0f172a;margin:0;color:#111827}
+.wrap{max-width:420px;margin:80px auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.3);text-align:center}
+header{background:linear-gradient(135deg,#1e40af,#1e3a8a);color:#fff;padding:24px}
+header img{height:70px;margin-bottom:6px}
+main{padding:22px;text-align:left}
+label{display:block;margin:10px 0 6px;font-weight:700}
+input{width:100%;padding:12px;border:2px solid #e5e7eb;border-radius:10px}
+button{background:#1e40af;color:#fff;border:none;padding:12px 16px;border-radius:10px;margin-top:16px;width:100%;font-weight:800;cursor:pointer}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <img src="/logo.png" alt="logo">
+      <h2 style="margin:0">Admin Login</h2>
+      <div>ALSAQQAF LOGISTICS LLC</div>
+    </header>
+    <main>
+      <form method="POST" action="/admin/login">
+        <label>Email</label>
+        <input name="username" type="email" required value="salemmohsin313@gmail.com">
+        <label>Password</label>
+        <input name="password" type="password" required placeholder="••••••••">
+        <button type="submit">Sign In</button>
+      </form>
+    </main>
+  </div>
+</body>
+</html>
