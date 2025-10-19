@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — ALSAQQAF Logistics</title>
+<link rel="icon" href="/favicon.png">
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;background:#0f172a;margin:0;color:#111827}
+.wrap{max-width:1150px;margin:30px auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+header{background:linear-gradient(135deg,#1e40af,#1e3a8a);color:#fff;padding:24px;display:flex;align-items:center;gap:12px;justify-content:space-between}
+.header-left{display:flex;align-items:center;gap:12px}
+header img{height:48px}
+main{padding:24px}
+table{width:100%;border-collapse:collapse}
+th,td{padding:12px 10px;border-bottom:1px solid #e5e7eb;text-align:left}
+th{background:#f8fafc;text-transform:uppercase;font-size:12px;letter-spacing:.06em}
+button{background:#1e40af;color:#fff;border:none;padding:8px 12px;border-radius:10px;cursor:pointer}
+.toolbar{display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.toolbar input{padding:10px;border:2px solid #e5e7eb;border-radius:10px;width:260px}
+footer{padding:16px;background:#f9fafb;border-top:1px solid #e5e7eb;text-align:center;color:#6b7280}
+.badge{padding:6px 10px;border-radius:999px;font-weight:700;font-size:12px;background:#eef2ff;color:#3730a3}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="header-left">
+        <img src="/logo.png" alt="logo">
+        <div>
+          <div style="font-weight:800">ALSAQQAF LOGISTICS LLC — Admin Dashboard</div>
+          <small>View applications and download PDFs</small>
+        </div>
+      </div>
+      <form method="POST" action="/admin/logout">
+        <button type="submit" style="background:#dc2626">Logout</button>
+      </form>
+    </header>
+    <main>
+      <div class="toolbar">
+        <input id="q" placeholder="Search by name or email">
+        <button onclick="loadApps()">Refresh</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>PDF</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </main>
+    <footer>Admin • <a href="/" target="_blank">Open Driver Form</a></footer>
+  </div>
+
+<script>
+let allApps = [];
+async function loadApps(){
+  const res = await fetch('/api/applications');
+  allApps = await res.json();
+  render();
+}
+function fmt(ts){ const d = new Date(ts||Date.now()); return d.toLocaleString(); }
+function render(){
+  const q = document.getElementById('q').value.toLowerCase();
+  const rows = document.getElementById('rows');
+  rows.innerHTML = '';
+  allApps
+    .filter(a => !q || ((`${a.firstName||''} ${a.lastName||''} ${a.email||''}`).toLowerCase().includes(q)))
+    .forEach(a => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${fmt(a.submittedAt)}</td>
+        <td>${(a.firstName||'')+' '+(a.lastName||'')}</td>
+        <td>${a.email||''}</td>
+        <td>${a.phone||''}</td>
+        <td><span class="badge">pending</span></td>
+        <td><a href="/api/applications/${a.id}/pdf" target="_blank"><button>Download PDF</button></a></td>
+      `;
+      rows.appendChild(tr);
+    });
+}
+document.getElementById('q').addEventListener('input', render);
+loadApps();
+</script>
+</body>
+</html>
